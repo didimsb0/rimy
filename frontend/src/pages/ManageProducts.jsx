@@ -17,7 +17,7 @@ const ManageProducts = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/products');
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
             setProducts(res.data);
         } catch (err) {
             console.error(err);
@@ -26,7 +26,7 @@ const ManageProducts = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/categories');
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/categories`);
             setCategories(res.data);
         } catch (err) {
             console.error('Error fetching categories:', err);
@@ -36,7 +36,7 @@ const ManageProducts = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Supprimer ce produit ?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/products/${id}`);
+                await axios.delete(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
                 fetchProducts();
             } catch (err) {
                 console.error(err);
@@ -51,7 +51,7 @@ const ManageProducts = () => {
         images.forEach(img => data.append('images', img));
 
         try {
-            await axios.post('http://localhost:5000/api/products', data);
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, data);
             alert('Produit ajouté !');
             setFormData({
                 name_fr: '', name_ar: '', price: '', category: '',

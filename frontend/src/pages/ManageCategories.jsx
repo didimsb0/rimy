@@ -12,7 +12,7 @@ const ManageCategories = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/categories');
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/categories`);
             setCategories(res.data);
         } catch (err) {
             console.error(err);
@@ -22,7 +22,7 @@ const ManageCategories = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Supprimer cette catégorie ?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/categories/${id}`);
+                await axios.delete(`${import.meta.env.VITE_API_URL}/api/categories/${id}`);
                 fetchCategories();
             } catch (err) {
                 console.error(err);
@@ -38,7 +38,7 @@ const ManageCategories = () => {
         if (image) data.append('image', image);
 
         try {
-            await axios.post('http://localhost:5000/api/categories', data);
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/categories`, data);
             alert('Catégorie ajoutée !');
             setFormData({ name_fr: '', name_ar: '' });
             setImage(null);

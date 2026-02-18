@@ -15,10 +15,11 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const apiUrl = import.meta.env.VITE_API_URL;
         const [prodRes, catRes, eventRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/products'),
-          axios.get('http://localhost:5000/api/categories'),
-          axios.get('http://localhost:5000/api/events')
+          axios.get(`${apiUrl}/api/products`),
+          axios.get(`${apiUrl}/api/categories`),
+          axios.get(`${apiUrl}/api/events`)
         ]);
         setProducts(prodRes.data);
         setCategories(catRes.data);
