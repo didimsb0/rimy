@@ -33,6 +33,11 @@ app.use('/api/products', require('./routes/products'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/events', require('./routes/events'));
 
+app.get('/cron', (req, res) => {
+    console.log(`[${new Date().toISOString()}] Cron job pulse received`);
+    res.send('Cron executed');
+});
+
 app.get('/', (req, res) => {
     res.send('WhatsApp Sales API is running');
 });
