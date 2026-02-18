@@ -9,7 +9,6 @@ import './styles/animations.css';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
-import ProductDetails from './pages/ProductDetails';
 import RamadanSplash from './components/RamadanSplash';
 import Login from './pages/Login';
 
@@ -33,7 +32,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
         <Route
           path="/admin/*"

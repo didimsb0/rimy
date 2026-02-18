@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MessageCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
   const { t, i18n } = useTranslation();
@@ -17,21 +16,16 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="product-card">
-      <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        <div className="product-image-container">
-          <img src={product.images[0] || 'https://via.placeholder.com/400x500?text=RIMY'} alt={name} className="product-image" />
-          {product.isSoldOut && <span className="badge badge-sold-out absolute-badge">{t('sold_out')}</span>}
-          {product.isBestSeller && <span className="badge badge-best-seller absolute-badge top-right">{t('best_sellers')}</span>}
-          <div className="image-overlay">
-            <span>Voir détails</span>
-          </div>
-        </div>
+      <div className="product-image-container">
+        <img src={product.images[0] || 'https://via.placeholder.com/400x500?text=RIMY'} alt={name} className="product-image" />
+        {product.isSoldOut && <span className="badge badge-sold-out absolute-badge">{t('sold_out')}</span>}
+        {product.isBestSeller && <span className="badge badge-best-seller absolute-badge top-right">{t('best_sellers')}</span>}
+      </div>
 
-        <div className="product-info">
-          <h3>{name}</h3>
-          <p className="price">{product.price} MRU</p>
-        </div>
-      </Link>
+      <div className="product-info">
+        <h3>{name}</h3>
+        <p className="price">{product.price} MRU</p>
+      </div>
 
       <div className="product-actions" style={{ padding: '0 1.5rem 1.5rem 1.5rem' }}>
         <button className="btn btn-accent full-width-btn" onClick={handleWhatsApp} disabled={product.isSoldOut}>
@@ -67,24 +61,8 @@ const ProductCard = ({ product }) => {
         .product-card:hover .product-image {
           transform: scale(1.05);
         }
-        .image-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0,0,0,0.2);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          transition: var(--transition);
-          color: white;
-          font-weight: 600;
-          backdrop-filter: blur(2px);
-        }
-        .product-card:hover .image-overlay {
-          opacity: 1;
+        .product-card:hover .product-image {
+          transform: scale(1.05);
         }
         .absolute-badge {
           position: absolute;
