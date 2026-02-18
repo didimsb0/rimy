@@ -27,7 +27,7 @@ const ProductDetails = () => {
 
     const handleWhatsApp = () => {
         const text = `Bonjour Rimy, je souhaite commander le produit: ${name}\n\nPhoto: ${product.images[0]}`;
-        window.open(`https://wa.me/22249495667?text=${encodeURIComponent(text)}`, '_blank');
+        window.open(`https://wa.me/22224230000?text=${encodeURIComponent(text)}`, '_blank');
     };
 
     return (
