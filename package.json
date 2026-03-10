@@ -6,7 +6,7 @@
         "node": "18.x"
     },
     "scripts": {
-        "build": "cd backend && npm install",
+        "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
         "start": "cd backend && npm start"
     }
 }
