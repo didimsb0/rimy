@@ -9,6 +9,8 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,30 +35,18 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const filteredProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(p => p.category?._id === selectedCategory);
+  const filteredProducts = (Array.isArray(products) ? products : []).filter(p => {
+    const matchCategory = selectedCategory === 'all' || p.category?._id === selectedCategory;
+    
+    const min = minPrice === '' ? 0 : Number(minPrice);
+    const max = maxPrice === '' ? Infinity : Number(maxPrice);
+    const matchPrice = p.price >= min && p.price <= max;
+    
+    return matchCategory && matchPrice;
+  });
 
   return (
     <main className="home">
-      {/* Event Banner */}
-      {events.length > 0 && (
-        <motion.div
-          className="event-banner"
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="container">
-            <p>
-              {i18n.language === 'ar'
-                ? 'رمضان مبارك مع ريمي'
-                : 'Ramadan Moubarak avec Rimy'}
-            </p>
-          </div>
-        </motion.div>
-      )}
-
       {/* Hero Section */}
       <motion.section
         className="hero"
@@ -99,7 +89,7 @@ const Home = () => {
           >
             {t('all')}
           </button>
-          {categories.map(cat => (
+          {(Array.isArray(categories) ? categories : []).map(cat => (
             <button
               key={cat._id}
               className={`filter-btn ${selectedCategory === cat._id ? 'active' : ''}`}
@@ -108,6 +98,26 @@ const Home = () => {
               {i18n.language === 'ar' ? cat.name_ar : cat.name_fr}
             </button>
           ))}
+        </div>
+
+        <div className="filter-bar price-filter-bar">
+          <div className="price-inputs">
+            <input 
+              type="number" 
+              placeholder={i18n.language === 'ar' ? 'السعر الأدنى' : 'Prix min'}
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              className="price-input"
+            />
+            <span className="price-separator">-</span>
+            <input 
+              type="number" 
+              placeholder={i18n.language === 'ar' ? 'السعر الأقصى' : 'Prix max'}
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              className="price-input"
+            />
+          </div>
         </div>
 
         {loading ? (
@@ -171,7 +181,7 @@ const Home = () => {
           display: flex;
           justify-content: center;
           gap: 1.5rem;
-          margin-bottom: 4rem;
+          margin-bottom: 1.5rem;
           overflow-x: auto;
           padding: 15px 0;
           scrollbar-width: none;
@@ -202,28 +212,44 @@ const Home = () => {
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
           gap: 3rem;
         }
-        .hero { height: 50vh; margin-bottom: 2rem; }
+        .price-filter-bar {
+          margin-bottom: 3rem;
+        }
+        .price-inputs {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background: white;
+          padding: 5px 15px;
+          border-radius: 25px;
+          border: 1px solid #eee;
+        }
+        .price-input {
+          border: none;
+          outline: none;
+          padding: 8px;
+          width: 100px;
+          font-family: inherit;
+          font-size: 0.85rem;
+          color: var(--text-dark);
+          text-align: center;
+        }
+        .price-separator {
+          color: #999;
+          font-weight: bold;
+        }
+        @media (max-width: 768px) {
+          .hero { height: 50vh; margin-bottom: 2rem; }
           .hero h1 { font-size: 2.2rem; letter-spacing: 2px; }
           .hero p { font-size: 1.2rem; }
-          .filter-bar { justify-content: flex-start; padding: 10px 20px; }
-          .product-grid { gap: 1.5rem; }
-        }
-
-        .event-banner {
-          background: var(--accent);
-          color: black;
-          padding: 10px 0;
-          text-align: center;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          font-size: 0.9rem;
-          border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        [dir="rtl"] .event-banner {
-          font-family: 'Noto Sans Arabic', sans-serif;
-          letter-spacing: 0;
-          font-size: 1.1rem;
+          .filter-bar { justify-content: flex-start; padding: 10px 20px; gap: 0.75rem; }
+          .product-grid { 
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 10px !important; 
+          }
+          .filter-btn { padding: 8px 15px; font-size: 0.7rem; }
+          .price-inputs { padding: 4px 10px; gap: 5px; }
+          .price-input { width: 80px; font-size: 0.75rem; padding: 5px; }
         }
       `}</style>
     </main>

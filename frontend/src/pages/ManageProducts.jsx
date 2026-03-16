@@ -9,6 +9,7 @@ const ManageProducts = () => {
         description_fr: '', description_ar: '', isSoldOut: false, isBestSeller: false
     });
     const [images, setImages] = useState([]);
+    const [editingProduct, setEditingProduct] = useState(null);
 
     useEffect(() => {
         fetchProducts();
@@ -44,6 +45,31 @@ const ManageProducts = () => {
         }
     };
 
+    const handleEdit = (product) => {
+        setEditingProduct(product);
+        setFormData({
+            name_fr: product.name_fr,
+            name_ar: product.name_ar,
+            price: product.price,
+            category: product.category?._id || '',
+            description_fr: product.description_fr || '',
+            description_ar: product.description_ar || '',
+            isSoldOut: product.isSoldOut,
+            isBestSeller: product.isBestSeller
+        });
+        setImages([]);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleCancelEdit = () => {
+        setEditingProduct(null);
+        setFormData({
+            name_fr: '', name_ar: '', price: '', category: '',
+            description_fr: '', description_ar: '', isSoldOut: false, isBestSeller: false
+        });
+        setImages([]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData();
@@ -51,23 +77,24 @@ const ManageProducts = () => {
         images.forEach(img => data.append('images', img));
 
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, data);
-            alert('Produit ajouté !');
-            setFormData({
-                name_fr: '', name_ar: '', price: '', category: '',
-                description_fr: '', description_ar: '', isSoldOut: false, isBestSeller: false
-            });
-            setImages([]);
+            if (editingProduct) {
+                await axios.put(`${import.meta.env.VITE_API_URL}/api/products/${editingProduct._id}`, data);
+                alert('Produit mis à jour !');
+            } else {
+                await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, data);
+                alert('Produit ajouté !');
+            }
+            handleCancelEdit();
             fetchProducts();
         } catch (err) {
             console.error(err);
-            alert('Erreur lors de l\'ajout du produit');
+            alert('Erreur lors de l\'enregistrement du produit');
         }
     };
 
     return (
         <div className="manage-section">
-            <h2>Ajouter un Produit</h2>
+            <h2>{editingProduct ? 'Éditer un Produit' : 'Ajouter un Produit'}</h2>
             <form onSubmit={handleSubmit} className="admin-form">
                 <div className="form-group grid-2">
                     <input type="text" value={formData.name_fr} placeholder="Nom (FR)" onChange={e => setFormData({ ...formData, name_fr: e.target.value })} required />
@@ -89,14 +116,23 @@ const ManageProducts = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '8px', color: '#666', fontSize: '0.9rem' }}>Photos du produit (Max 5)</label>
-                    <input type="file" multiple onChange={e => setImages(Array.from(e.target.files))} />
+                    <label style={{ display: 'block', marginBottom: '8px', color: '#666', fontSize: '0.9rem' }}>
+                        Photos du produit (Max 5) {editingProduct && '(Optionnel : laissez vide pour conserver les images actuelles)'}
+                    </label>
+                    <input type="file" multiple onChange={e => setImages(Array.from(e.target.files))} required={!editingProduct} />
                 </div>
                 <div className="form-group checkbox-group">
                     <label><input type="checkbox" checked={formData.isSoldOut} onChange={e => setFormData({ ...formData, isSoldOut: e.target.checked })} /> Sold Out</label>
                     <label><input type="checkbox" checked={formData.isBestSeller} onChange={e => setFormData({ ...formData, isBestSeller: e.target.checked })} /> Best Seller</label>
                 </div>
-                <button type="submit" className="btn btn-primary">Enregistrer le Produit</button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <button type="submit" className="btn btn-primary">{editingProduct ? 'Mettre à jour le Produit' : 'Enregistrer le Produit'}</button>
+                    {editingProduct && (
+                        <button type="button" className="btn" style={{ background: '#eee', color: '#333' }} onClick={handleCancelEdit}>
+                            Annuler
+                        </button>
+                    )}
+                </div>
             </form>
 
             <div className="admin-list">
@@ -121,7 +157,12 @@ const ManageProducts = () => {
                                     {p.isSoldOut && <span style={{ color: '#ff4d4d', fontSize: '0.8rem', fontWeight: 'bold' }}>SOLD OUT</span>}
                                     {p.isBestSeller && <span style={{ color: '#d4af37', fontSize: '0.8rem', fontWeight: 'bold' }}> BEST SELLER</span>}
                                 </td>
-                                <td><button onClick={() => handleDelete(p._id)} className="delete-btn">Supprimer</button></td>
+                                <td>
+                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                        <button onClick={() => handleEdit(p)} className="edit-btn">Éditer</button>
+                                        <button onClick={() => handleDelete(p._id)} className="delete-btn">Supprimer</button>
+                                    </div>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -140,6 +181,8 @@ const ManageProducts = () => {
                 th, td { padding: 1rem; border-bottom: 1px solid #eee; text-align: left; }
                 .delete-btn { color: #ff4d4d; border: 1px solid #ff4d4d; background: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: var(--transition); }
                 .delete-btn:hover { background: #ff4d4d; color: white; }
+                .edit-btn { color: var(--primary); border: 1px solid var(--primary); background: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: var(--transition); }
+                .edit-btn:hover { background: var(--primary); color: white; }
             `}</style>
         </div>
     );

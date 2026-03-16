@@ -103,6 +103,46 @@ const ProductCard = ({ product }) => {
           transform: none !important;
           box-shadow: none !important;
         }
+        @media (max-width: 768px) {
+          .product-card {
+            border-radius: 8px;
+          }
+          .product-image-container {
+            height: 180px;
+            border-radius: 8px 8px 0 0;
+          }
+          .product-info h3 {
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .price {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+          }
+          .product-info {
+            padding: 0.6rem 0.4rem 0.2rem 0.4rem;
+          }
+          .product-actions {
+            padding: 0 0.4rem 0.6rem 0.4rem !important;
+          }
+          .btn {
+            font-size: 0.70rem;
+            padding: 6px 4px;
+            gap: 5px;
+          }
+          .absolute-badge {
+            font-size: 0.55rem;
+            padding: 3px 6px;
+            bottom: 6px;
+            left: 6px;
+          }
+          .top-right {
+            top: 6px;
+            right: 6px;
+          }
+        }
       `}</style>
     </div>
   );

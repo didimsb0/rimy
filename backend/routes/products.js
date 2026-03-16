@@ -39,6 +39,42 @@ router.post('/', upload.array('images', 5), async (req, res) => {
     }
 });
 
+// Update a product
+router.put('/:id', upload.array('images', 5), async (req, res) => {
+    try {
+        let updateData = {
+            name_fr: req.body.name_fr,
+            name_ar: req.body.name_ar,
+            description_fr: req.body.description_fr,
+            description_ar: req.body.description_ar,
+            price: req.body.price,
+            category: req.body.category,
+            isSoldOut: req.body.isSoldOut === 'true',
+            isBestSeller: req.body.isBestSeller === 'true',
+        };
+
+        // If new images are uploaded, update the images array
+        if (req.files && req.files.length > 0) {
+            updateData.images = req.files.map(file => file.path);
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            updateData,
+            { new: true }
+        ).populate('category');
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.json(updatedProduct);
+    } catch (err) {
+        console.error('Error in Product Update:', err);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+});
+
 // Delete a product
 router.delete('/:id', async (req, res) => {
     try {

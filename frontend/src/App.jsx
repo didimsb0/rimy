@@ -9,12 +9,10 @@ import './styles/animations.css';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
-import RamadanSplash from './components/RamadanSplash';
 import Login from './pages/Login';
 
 function App() {
   const { i18n } = useTranslation();
-  const [showSplash, setShowSplash] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('adminAuth') === 'true'
   );
@@ -22,10 +20,6 @@ function App() {
   useEffect(() => {
     document.body.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
   }, [i18n.language]);
-
-  if (showSplash) {
-    return <RamadanSplash onEnter={() => setShowSplash(false)} />;
-  }
 
   return (
     <Router>

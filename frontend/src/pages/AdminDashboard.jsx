@@ -70,11 +70,104 @@ const AdminDashboard = () => {
   );
 };
 
-const AdminHome = () => (
-  <div>
-    <h1>Tableau de Bord</h1>
-    <p>Bienvenue dans l'espace de gestion de votre boutique Rimy.</p>
-  </div>
-);
+const AdminHome = () => {
+  const [stats, setStats] = React.useState({ products: 0, categories: 0 });
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [prodRes, catRes] = await Promise.all([
+          fetch(`${import.meta.env.VITE_API_URL}/api/products`).then(r => r.json()),
+          fetch(`${import.meta.env.VITE_API_URL}/api/categories`).then(r => r.json())
+        ]);
+        setStats({
+          products: Array.isArray(prodRes) ? prodRes.length : 0,
+          categories: Array.isArray(catRes) ? catRes.length : 0
+        });
+      } catch (err) {
+        console.error("Erreur stats:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  return (
+    <div>
+      <h1 style={{ marginBottom: '0.5rem' }}>Tableau de Bord</h1>
+      <p style={{ color: '#666', marginBottom: '2rem' }}>Bienvenue dans l'espace de gestion de votre boutique Rimy.</p>
+      
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon products-icon">
+            <Tags size={24} />
+          </div>
+          <div className="stat-info">
+            <h3>Produits</h3>
+            <p className="stat-value">{loading ? '...' : stats.products}</p>
+          </div>
+        </div>
+        
+        <div className="stat-card">
+          <div className="stat-icon categories-icon">
+            <LayoutDashboard size={24} />
+          </div>
+          <div className="stat-info">
+            <h3>Catégories</h3>
+            <p className="stat-value">{loading ? '...' : stats.categories}</p>
+          </div>
+        </div>
+      </div>
+
+      <style jsx="true">{`
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+          margin-top: 2rem;
+        }
+        .stat-card {
+          background: white;
+          padding: 1.5rem;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          border: 1px solid #f0f0f0;
+        }
+        .stat-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+        }
+        .products-icon {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .categories-icon {
+          background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .stat-info h3 {
+          font-size: 0.9rem;
+          color: #666;
+          margin-bottom: 0.5rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+        .stat-value {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #2c3e50;
+        }
+      `}</style>
+    </div>
+  );
+};
 
 export default AdminDashboard;
