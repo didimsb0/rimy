@@ -10,6 +10,7 @@ const ManageProducts = () => {
     });
     const [images, setImages] = useState([]);
     const [editingProduct, setEditingProduct] = useState(null);
+    const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('');
 
     useEffect(() => {
         fetchProducts();
@@ -136,7 +137,19 @@ const ManageProducts = () => {
             </form>
 
             <div className="admin-list">
-                <h3>Produits existants</h3>
+                <div className="list-header">
+                    <h3>Produits existants</h3>
+                    <select 
+                        value={selectedCategoryFilter} 
+                        onChange={e => setSelectedCategoryFilter(e.target.value)}
+                        className="filter-select"
+                    >
+                        <option value="">Toutes les catégories</option>
+                        {categories.map(cat => (
+                            <option key={cat._id} value={cat._id}>{cat.name_fr} | {cat.name_ar}</option>
+                        ))}
+                    </select>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -148,7 +161,9 @@ const ManageProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map(p => (
+                        {products
+                            .filter(p => selectedCategoryFilter ? (p.category?._id || p.category) === selectedCategoryFilter : true)
+                            .map(p => (
                             <tr key={p._id}>
                                 <td><img src={p.images[0]} alt="" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /></td>
                                 <td>{p.name_fr}</td>
@@ -176,7 +191,9 @@ const ManageProducts = () => {
                 input[type="text"], input[type="number"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
                 .checkbox-group { display: flex; gap: 2rem; }
                 .admin-list { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); }
-                .admin-list h3 { margin-bottom: 1.5rem; }
+                .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+                .list-header h3 { margin: 0; }
+                .filter-select { max-width: 250px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
                 table { width: 100%; border-collapse: collapse; }
                 th, td { padding: 1rem; border-bottom: 1px solid #eee; text-align: left; }
                 .delete-btn { color: #ff4d4d; border: 1px solid #ff4d4d; background: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: var(--transition); }

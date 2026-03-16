@@ -141,6 +141,8 @@ const ProductCard = ({ product }) => {
           .top-right {
             top: 6px;
             right: 6px;
+            bottom: auto;
+            left: auto;
           }
         }
       `}</style>
