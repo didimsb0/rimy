@@ -10,7 +10,10 @@ const ProductCard = ({ product }) => {
   const description = currentLang === 'ar' ? product.description_ar : product.description_fr;
 
   const handleWhatsApp = () => {
-    const text = `Bonjour Rimy, je souhaite commander le produit: ${name}\n\nPhoto: ${product.images[0] || ''}`;
+    const textFr = `Bonjour Rimy ✨\n\nJe suis très intéressé(e) par ce produit et j'aimerais passer commande :\n\n🛍️ *Produit* : ${product.name_fr}\n💰 *Prix* : ${product.price} MRU\n\nPouvez-vous s'il vous plaît me confirmer la disponibilité ? Merci !\n\nPhoto: ${product.images[0] || ''}`;
+    const textAr = `مرحباً ريمي ✨\n\nأنا مهتم(ة) جداً بهذا المنتج وأود تقديم طلب:\n\n🛍️ *المنتج* : ${product.name_ar}\n💰 *السعر* : ${product.price} أوقية\n\nهل يمكنكم تأكيد توفر هذا المنتج؟ شكراً لكم!\n\nصورة: ${product.images[0] || ''}`;
+    const text = currentLang === 'ar' ? textAr : textFr;
+    
     window.open(`https://wa.me/22224230000?text=${encodeURIComponent(text)}`, '_blank');
   };
 
