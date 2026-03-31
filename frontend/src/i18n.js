@@ -9,7 +9,7 @@ const resources = {
             "shop_now": "Acheter maintenant",
             "categories": "Catégories",
             "best_sellers": "Meilleures ventes",
-            "sold_out": "Épuisé",
+            "sold_out": "Rupture de stock",
             "add_to_cart": "Commander sur WhatsApp",
             "lang_toggle": "العربية",
             "admin_panel": "Administration",
