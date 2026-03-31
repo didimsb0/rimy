@@ -21,6 +21,9 @@ const ProductCard = ({ product }) => {
     <div className="product-card">
       <div className="product-image-container">
         <img src={product.images[0] || 'https://via.placeholder.com/400x500?text=RIMY'} alt={name} className="product-image" />
+        <div className="product-logo-overlay">
+          <img src="/logo.jpg" alt="Rimy" className="product-logo-watermark" />
+        </div>
         {product.isSoldOut && <span className="badge badge-sold-out absolute-badge">{t('sold_out')}</span>}
         {product.isBestSeller && <span className="badge badge-best-seller absolute-badge top-right">{t('best_sellers')}</span>}
       </div>
@@ -77,6 +80,30 @@ const ProductCard = ({ product }) => {
           right: 15px;
           bottom: auto;
           left: auto;
+        }
+        .product-logo-overlay {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 2;
+          pointer-events: none;
+        }
+        .product-logo-watermark {
+          width: 90px;
+          height: 90px;
+          object-fit: contain;
+          border-radius: 50%;
+          opacity: 0.55;
+          background: rgba(255, 255, 255, 0.35);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+          padding: 6px;
+          transition: opacity 0.3s ease;
+        }
+        .product-card:hover .product-logo-watermark {
+          opacity: 0.75;
         }
         .product-info {
           padding: 1.5rem 1.5rem 0.5rem 1.5rem;
@@ -146,6 +173,11 @@ const ProductCard = ({ product }) => {
             right: 6px;
             bottom: auto;
             left: auto;
+          }
+          .product-logo-watermark {
+            width: 55px;
+            height: 55px;
+            padding: 4px;
           }
         }
       `}</style>
