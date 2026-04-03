@@ -16,6 +16,8 @@ const resources = {
             "all": "Tous",
             "contact_us": "Contactez-nous",
             "latest_events": "Événements récents",
+            "opening_hours": "Ouvert tous les jours de 16h à 00h (sauf dimanche)",
+            "location": "Localisation de la boutique",
         }
     },
     ar: {
@@ -31,6 +33,8 @@ const resources = {
             "all": "الكل",
             "contact_us": "اتصل بنا",
             "latest_events": "أحدث الفعاليات",
+            "opening_hours": "مفتوح يومياً من 16:00 إلى 00:00 (ما عدا الأحد)",
+            "location": "موقع المتجر",
         }
     }
 };
