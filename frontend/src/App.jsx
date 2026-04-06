@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './i18n';
 import './index.css';
@@ -10,6 +10,25 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
+
+const AppContent = ({ isAuthenticated, setIsAuthenticated }) => {
+  const location = useLocation();
+  const isAdminPath = location.pathname.startsWith('/admin');
+
+  return (
+    <>
+      {!isAdminPath && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
+        <Route
+          path="/admin/*"
+          element={isAuthenticated ? <AdminDashboard /> : <Navigate to="/login" />}
+        />
+      </Routes>
+    </>
+  );
+};
 
 function App() {
   const { i18n } = useTranslation();
@@ -23,15 +42,10 @@ function App() {
 
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
-        <Route
-          path="/admin/*"
-          element={isAuthenticated ? <AdminDashboard /> : <Navigate to="/login" />}
-        />
-      </Routes>
+      <AppContent
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+      />
     </Router>
   );
 }
