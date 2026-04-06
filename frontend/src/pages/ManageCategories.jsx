@@ -316,7 +316,7 @@ const ManageCategories = () => {
                 .btn-ghost { background: #f8fafc; color: #64748b; }
                 .submit-btn { display: flex; align-items: center; gap: 8px; padding: 14px 32px; font-weight: 700; }
 
-                @media (max-width: 768px) {
+                @media (max-width: 1024px) {
                     .desktop-only { display: none; }
                     .mobile-only { display: block; }
                     .input-row { grid-template-columns: 1fr; }

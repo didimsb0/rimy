@@ -482,10 +482,6 @@ const ManageProducts = () => {
                 .submit-btn { display: flex; align-items: center; gap: 8px; padding: 14px 32px; font-weight: 700; }
 
                 @media (max-width: 1024px) {
-                    .form-grid { grid-template-columns: 1fr; gap: 1rem; }
-                }
-
-                @media (max-width: 768px) {
                     .desktop-only { display: none; }
                     .mobile-only { display: block; }
                     .filter-bar { flex-direction: column; }
@@ -496,6 +492,7 @@ const ManageProducts = () => {
                     .input-row { grid-template-columns: 1fr; gap: 0; }
                     .form-footer { flex-direction: column-reverse; }
                     .btn { width: 100%; justify-content: center; }
+                    .form-grid { grid-template-columns: 1fr; gap: 1rem; }
                 }
 
                 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
