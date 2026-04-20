@@ -155,6 +155,9 @@ const Home = () => {
       </section>
 
       <style jsx="true">{`
+        .home {
+          overflow-x: hidden;
+        }
         .hero {
           height: 70vh;
           background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/port.jpg');
@@ -190,6 +193,7 @@ const Home = () => {
           overflow-x: auto;
           padding: 15px 0;
           scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
         }
         .filter-bar::-webkit-scrollbar { display: none; }
         .filter-btn {
@@ -305,17 +309,31 @@ const Home = () => {
           .hero { height: 50vh; margin-bottom: 2rem; }
           .hero h1 { font-size: 2.2rem; letter-spacing: 2px; }
           .hero p { font-size: 1.2rem; }
-          .filter-bar { justify-content: flex-start; padding: 10px 20px; gap: 0.75rem; }
-          .product-grid { 
-            grid-template-columns: repeat(2, 1fr) !important; 
-            gap: 10px !important; 
+          .filter-bar {
+            justify-content: flex-start;
+            padding: 10px 20px 10px 0;
+            gap: 0.75rem;
+            margin-left: -20px;
+            margin-right: -20px;
+            padding-left: 0;
+            padding-right: 20px;
           }
-          .filter-btn { padding: 8px 15px; font-size: 0.7rem; }
+          .filter-bar::before {
+            content: '';
+            min-width: 20px;
+            flex-shrink: 0;
+          }
+          .product-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+          }
+          .filter-btn { padding: 8px 15px; font-size: 0.7rem; white-space: nowrap; flex-shrink: 0; }
           .social-links-bar { gap: 1rem; margin-bottom: 2rem; }
           .social-link { width: 45px; height: 45px; padding: 10px; }
-          .opening-hours-card { padding: 1rem 1.5rem; gap: 1rem; }
+          .opening-hours-card { padding: 1rem 1.5rem; gap: 1rem; width: 100%; box-sizing: border-box; }
           .hours-text .value { font-size: 0.9rem; }
           .location-card { font-size: 0.75rem; }
+          .store-info-premium { max-width: 100%; padding: 0; }
         }
       `}</style>
     </main>
