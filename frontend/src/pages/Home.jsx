@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ProductCard from '../components/ProductCard';
 import axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import '../styles/Home.css';
 
@@ -129,20 +129,10 @@ const Home = () => {
         {loading ? (
           <div className="loading-state">Chargement...</div>
         ) : (
-          <div className="product-grid">
-            <AnimatePresence mode="popLayout">
-              {filteredProducts.map(product => (
-                <motion.div
-                  key={product._id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+          <div className="product-grid" key={selectedCategory}>
+            {filteredProducts.map(product => (
+              <ProductCard key={product._id} product={product} />
+            ))}
           </div>
         )}
 
