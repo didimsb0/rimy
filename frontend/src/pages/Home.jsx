@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ProductCard from '../components/ProductCard';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Facebook, MessageCircle, Music, Ghost, MapPin, Clock } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 const Home = () => {
   const { t, i18n } = useTranslation();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL;
-        const [prodRes, catRes, eventRes] = await Promise.all([
+        const [prodRes, catRes] = await Promise.all([
           axios.get(`${apiUrl}/api/products`),
           axios.get(`${apiUrl}/api/categories`),
-          axios.get(`${apiUrl}/api/events`)
         ]);
         setProducts(prodRes.data);
         setCategories(catRes.data);
-        setEvents(eventRes.data);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -128,15 +125,11 @@ const Home = () => {
         {loading ? (
           <div className="loading-state">Chargement...</div>
         ) : (
-          <motion.div
-            className="product-grid"
-            layout
-          >
+          <div className="product-grid">
             <AnimatePresence mode='popLayout'>
               {filteredProducts.map(product => (
                 <motion.div
                   key={product._id}
-                  layout
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -146,7 +139,7 @@ const Home = () => {
                 </motion.div>
               ))}
             </AnimatePresence>
-          </motion.div>
+          </div>
         )}
 
         {!loading && filteredProducts.length === 0 && (
