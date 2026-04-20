@@ -137,9 +137,9 @@ const Home = () => {
                 <motion.div
                   key={product._id}
                   layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
                   <ProductCard product={product} />
@@ -155,9 +155,6 @@ const Home = () => {
       </section>
 
       <style jsx="true">{`
-        .home {
-          overflow-x: hidden;
-        }
         .hero {
           height: 70vh;
           background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/port.jpg');
