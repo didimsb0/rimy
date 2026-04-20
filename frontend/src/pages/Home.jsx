@@ -311,17 +311,8 @@ const Home = () => {
           .hero p { font-size: 1.2rem; }
           .filter-bar {
             justify-content: flex-start;
-            padding: 10px 20px 10px 0;
+            padding: 10px 16px;
             gap: 0.75rem;
-            margin-left: -20px;
-            margin-right: -20px;
-            padding-left: 0;
-            padding-right: 20px;
-          }
-          .filter-bar::before {
-            content: '';
-            min-width: 20px;
-            flex-shrink: 0;
           }
           .product-grid {
             grid-template-columns: repeat(2, 1fr) !important;
