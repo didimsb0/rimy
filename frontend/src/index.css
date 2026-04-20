@@ -17,11 +17,18 @@
   padding: 0;
 }
 
+html {
+  scrollbar-gutter: stable;
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   color: var(--text-dark);
   background-color: #FDFBF8;
   line-height: 1.6;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 h1,
