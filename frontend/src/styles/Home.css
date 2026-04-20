@@ -1,0 +1,231 @@
+/* ── Hero ── */
+.hero {
+  height: 70vh;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/port.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  margin-bottom: 4rem;
+}
+.hero h1 {
+  font-size: 4.5rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+.hero p {
+  font-size: 1.8rem;
+  margin-bottom: 2.5rem;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+/* ── Catalog ── */
+.main-catalog {
+  padding-bottom: 5rem;
+  overflow: hidden;
+}
+
+/* ── Filter Bar ── */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding: 15px 0;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+.filter-btn {
+  background: white;
+  border: 1px solid #eee;
+  padding: 12px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  transition: var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.filter-btn:hover {
+  border-color: var(--accent);
+}
+.filter-btn.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* ── Product Grid ── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 3rem;
+}
+
+/* ── Social Links ── */
+.social-links-bar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+.social-link {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: var(--text-dark);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 12px;
+}
+.social-link svg {
+  width: 100%;
+  height: 100%;
+}
+.social-link:hover {
+  transform: translateY(-8px) scale(1.1);
+  color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.whatsapp:hover { background: #25D366; }
+.tiktok:hover   { background: #000000; }
+.facebook:hover { background: #1877F2; }
+.snapchat:hover { background: #FFFC00; color: black !important; }
+
+/* ── Store Info ── */
+.store-info-premium {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0 auto 4rem;
+  width: 100%;
+  max-width: 600px;
+}
+.opening-hours-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem 2.5rem;
+  background: white;
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.info-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.hours-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.hours-text .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  font-weight: 700;
+}
+.hours-text .value {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', serif;
+}
+.location-card {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.3s ease;
+  padding: 8px 20px;
+  border-radius: 30px;
+}
+.location-card:hover {
+  background: rgba(0,0,0,0.05);
+  letter-spacing: 2px;
+}
+.location-icon-wrapper {
+  width: 24px;
+  height: 24px;
+  color: #EA4335;
+  flex-shrink: 0;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .hero {
+    height: 50vh;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+  }
+  .hero p {
+    font-size: 1.2rem;
+  }
+  .filter-bar {
+    justify-content: flex-start;
+    padding: 10px 0;
+    gap: 0.75rem;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .filter-btn {
+    padding: 8px 15px;
+    font-size: 0.7rem;
+  }
+  .social-links-bar {
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .social-link {
+    width: 45px;
+    height: 45px;
+    padding: 10px;
+  }
+  .opening-hours-card {
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+    width: 100%;
+  }
+  .hours-text .value {
+    font-size: 0.9rem;
+  }
+  .location-card {
+    font-size: 0.75rem;
+  }
+  .store-info-premium {
+    max-width: 100%;
+  }
+}

@@ -17,8 +17,9 @@
   padding: 0;
 }
 
-html {
-  overflow-x: clip;
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -26,7 +27,6 @@ body {
   color: var(--text-dark);
   background-color: #FDFBF8;
   line-height: 1.6;
-  overflow-x: clip;
 }
 
 h1,
