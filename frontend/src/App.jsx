@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
 import TikTokRedirect from './pages/TikTokRedirect';
+import { trackVisit } from './utils/visitor';
 
 const isTikTokBrowser = () => {
   if (typeof navigator === 'undefined') return false;
@@ -31,6 +32,12 @@ const AppContent = ({ isAuthenticated, setIsAuthenticated }) => {
       navigate('/tiktok', { replace: true });
     }
   }, [isTikTokPath, isAdminPath, navigate]);
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.startsWith('/admin') || path === '/login' || path === '/tiktok') return;
+    trackVisit();
+  }, [location.pathname]);
 
   return (
     <>

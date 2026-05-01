@@ -8,6 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+app.set('trust proxy', true);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,6 +33,9 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/api/products', require('./routes/products'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/events', require('./routes/events'));
+app.use('/api/visits', require('./routes/visits'));
+app.use('/api/conversions', require('./routes/conversions'));
+app.use('/api/stats', require('./routes/stats'));
 
 app.get('/cron', (req, res) => {
     console.log(`[${new Date().toISOString()}] Cron job pulse received`);

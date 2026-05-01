@@ -14,7 +14,8 @@ import {
   ShoppingBag,
   PackagePlus,
   Layers,
-  Search
+  Search,
+  MessageCircle
 } from 'lucide-react';
 import ManageProducts from './ManageProducts';
 import ManageCategories from './ManageCategories';
@@ -288,18 +289,33 @@ const AdminDashboard = () => {
 };
 
 const AdminHome = () => {
-  const [stats, setStats] = useState({ products: 0, categories: 0 });
+  const [stats, setStats] = useState({
+    products: 0,
+    categories: 0,
+    totalVisits: 0,
+    uniqueVisitors: 0,
+    totalConversions: 0,
+    convertingVisitors: 0,
+    conversionRate: 0,
+    visitsToday: 0,
+  });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [p, c] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_API_URL}/api/products`),
-          axios.get(`${import.meta.env.VITE_API_URL}/api/categories`)
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const [p, c, s] = await Promise.all([
+          axios.get(`${apiUrl}/api/products`),
+          axios.get(`${apiUrl}/api/categories`),
+          axios.get(`${apiUrl}/api/stats`),
         ]);
-        setStats({ products: p.data.length, categories: c.data.length });
+        setStats({
+          products: p.data.length,
+          categories: c.data.length,
+          ...s.data,
+        });
       } catch (err) {
         console.error(err);
       } finally {
@@ -309,11 +325,14 @@ const AdminHome = () => {
     fetchData();
   }, []);
 
+  const fmt = (n) => Number(n || 0).toLocaleString('fr-FR');
+
   const cards = [
-    { label: 'Produits', value: stats.products, icon: <ShoppingBag />, color: '#4f46e5', link: '/admin/products' },
-    { label: 'Catégories', value: stats.categories, icon: <Tags />, color: '#d4af37', link: '/admin/categories' },
-    { label: 'Visites', value: '1,284', icon: <TrendingUp />, color: '#10b981', link: '#' },
-    { label: 'Clients', value: '42', icon: <Users />, color: '#f59e0b', link: '#' },
+    { label: 'Produits', value: fmt(stats.products), icon: <ShoppingBag />, color: '#4f46e5', link: '/admin/products' },
+    { label: 'Catégories', value: fmt(stats.categories), icon: <Tags />, color: '#d4af37', link: '/admin/categories' },
+    { label: 'Visites', sub: `${fmt(stats.visitsToday)} aujourd'hui`, value: fmt(stats.totalVisits), icon: <TrendingUp />, color: '#10b981', link: '#' },
+    { label: 'Clients uniques', value: fmt(stats.uniqueVisitors), icon: <Users />, color: '#f59e0b', link: '#' },
+    { label: 'Conversions WhatsApp', sub: `${stats.conversionRate}% du trafic`, value: fmt(stats.totalConversions), icon: <MessageCircle />, color: '#25D366', link: '#' },
   ];
 
   return (
@@ -332,6 +351,7 @@ const AdminHome = () => {
             <div className="stat-card-content">
               <span className="stat-card-value">{loading ? '...' : card.value}</span>
               <span className="stat-card-label">{card.label}</span>
+              {card.sub && !loading && <span className="stat-card-sub">{card.sub}</span>}
             </div>
           </div>
         ))}
@@ -378,6 +398,7 @@ const AdminHome = () => {
         .stat-card-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
         .stat-card-value { display: block; font-size: 1.5rem; font-weight: 800; color: #1e293b; }
         .stat-card-label { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+        .stat-card-sub { display: block; font-size: 0.7rem; color: #94a3b8; margin-top: 4px; font-weight: 500; }
 
         .quick-access h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; color: #1e293b; }
         .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }

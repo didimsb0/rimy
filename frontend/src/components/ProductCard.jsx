@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { MessageCircle } from 'lucide-react';
 import '../styles/ProductCard.css';
+import { trackConversion, getVisitorRef } from '../utils/visitor';
 
 const ProductCard = ({ product }) => {
   const { t, i18n } = useTranslation();
@@ -9,8 +10,15 @@ const ProductCard = ({ product }) => {
   const name = currentLang === 'ar' ? product.name_ar : product.name_fr;
 
   const handleWhatsApp = () => {
-    const textFr = `Bonjour Rimy ✨\n\nJe suis très intéressé(e) par ce produit et j'aimerais passer commande :\n\n🛍️ *Produit* : ${product.name_fr}\n💰 *Prix* : ${product.price} MRU\n\nPouvez-vous s'il vous plaît me confirmer la disponibilité ? Merci !\n\nPhoto: ${product.images[0] || ''}`;
-    const textAr = `مرحباً ريمي ✨\n\nأنا مهتم(ة) جداً بهذا المنتج وأود تقديم طلب:\n\n🛍️ *المنتج* : ${product.name_ar}\n💰 *السعر* : ${product.price} أوقية\n\nهل يمكنكم تأكيد توفر هذا المنتج؟ شكراً لكم!\n\nصورة: ${product.images[0] || ''}`;
+    trackConversion({
+      productId: product._id,
+      productName: product.name_fr,
+      price: product.price,
+    });
+
+    const ref = getVisitorRef();
+    const textFr = `Bonjour Rimy ✨\n\nJe suis très intéressé(e) par ce produit et j'aimerais passer commande :\n\n🛍️ *Produit* : ${product.name_fr}\n💰 *Prix* : ${product.price} MRU\n\nPouvez-vous s'il vous plaît me confirmer la disponibilité ? Merci !\n\nPhoto: ${product.images[0] || ''}\n\nRéf: ${ref}`;
+    const textAr = `مرحباً ريمي ✨\n\nأنا مهتم(ة) جداً بهذا المنتج وأود تقديم طلب:\n\n🛍️ *المنتج* : ${product.name_ar}\n💰 *السعر* : ${product.price} أوقية\n\nهل يمكنكم تأكيد توفر هذا المنتج؟ شكراً لكم!\n\nصورة: ${product.images[0] || ''}\n\nالمرجع: ${ref}`;
     const text = currentLang === 'ar' ? textAr : textFr;
 
     window.open(`https://wa.me/22224230000?text=${encodeURIComponent(text)}`, '_blank');
