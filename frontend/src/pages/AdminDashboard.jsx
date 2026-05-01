@@ -330,7 +330,7 @@ const AdminHome = () => {
   const cards = [
     { label: 'Produits', value: fmt(stats.products), icon: <ShoppingBag />, color: '#4f46e5', link: '/admin/products' },
     { label: 'Catégories', value: fmt(stats.categories), icon: <Tags />, color: '#d4af37', link: '/admin/categories' },
-    { label: 'Visites', sub: `${fmt(stats.visitsToday)} aujourd'hui`, value: fmt(stats.totalVisits), icon: <TrendingUp />, color: '#10b981', link: '#' },
+    { label: 'Visites', value: fmt(stats.totalVisits), icon: <TrendingUp />, color: '#10b981', link: '#' },
     { label: 'Clients uniques', value: fmt(stats.uniqueVisitors), icon: <Users />, color: '#f59e0b', link: '#' },
     { label: 'Conversions WhatsApp', sub: `${stats.conversionRate}% du trafic`, value: fmt(stats.totalConversions), icon: <MessageCircle />, color: '#25D366', link: '#' },
   ];
