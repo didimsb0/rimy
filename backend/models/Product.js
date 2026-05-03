@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema({
     images: [{ type: String }], // Array of Cloudinary URLs
     isSoldOut: { type: Boolean, default: false },
     isBestSeller: { type: Boolean, default: false },
+    isNew: { type: Boolean, default: false },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

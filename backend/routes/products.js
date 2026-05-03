@@ -1,13 +1,43 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
+const Discount = require('../models/Discount');
 const { upload } = require('../config/cloudinary');
+
+const computeEffectiveDiscount = (product, discounts) => {
+    const productId = String(product._id);
+    const categoryId = product.category?._id ? String(product.category._id) : null;
+
+    const productSpecific = discounts.find(d => d.scope === 'product' && d.product && String(d.product) === productId);
+    if (productSpecific) return productSpecific.percentage;
+
+    if (categoryId) {
+        const categorySpecific = discounts.find(d => d.scope === 'category' && d.category && String(d.category) === categoryId);
+        if (categorySpecific) return categorySpecific.percentage;
+    }
+
+    const global = discounts.find(d => d.scope === 'all');
+    if (global) return global.percentage;
+
+    return 0;
+};
+
+const enrichWithDiscount = async (products) => {
+    const discounts = await Discount.find({ isActive: true }).lean();
+    return products.map(p => {
+        const obj = p.toObject ? p.toObject() : p;
+        const pct = computeEffectiveDiscount(obj, discounts);
+        const finalPrice = pct > 0 ? Math.round(obj.price * (1 - pct / 100)) : obj.price;
+        return { ...obj, discountPercentage: pct, finalPrice };
+    });
+};
 
 // Get all products
 router.get('/', async (req, res) => {
     try {
         const products = await Product.find().populate('category');
-        res.json(products);
+        const enriched = await enrichWithDiscount(products);
+        res.json(enriched);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -28,6 +58,7 @@ router.post('/', upload.array('images', 5), async (req, res) => {
             images: imageUrls,
             isSoldOut: req.body.isSoldOut === 'true',
             isBestSeller: req.body.isBestSeller === 'true',
+            isNew: req.body.isNew === 'true',
         });
 
         const newProduct = await product.save();
@@ -51,6 +82,7 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
             category: req.body.category,
             isSoldOut: req.body.isSoldOut === 'true',
             isBestSeller: req.body.isBestSeller === 'true',
+            isNew: req.body.isNew === 'true',
         };
 
         // If new images are uploaded, update the images array

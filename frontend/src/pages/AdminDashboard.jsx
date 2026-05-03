@@ -15,10 +15,12 @@ import {
   PackagePlus,
   Layers,
   Search,
-  MessageCircle
+  MessageCircle,
+  Percent
 } from 'lucide-react';
 import ManageProducts from './ManageProducts';
 import ManageCategories from './ManageCategories';
+import ManageDiscounts from './ManageDiscounts';
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
@@ -55,12 +57,14 @@ const AdminDashboard = () => {
     { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Dashboard', exact: true },
     { path: '/admin/products', icon: <Package size={20} />, label: 'Produits' },
     { path: '/admin/categories', icon: <Tags size={20} />, label: 'Catégories' },
+    { path: '/admin/discounts', icon: <Percent size={20} />, label: 'Réductions' },
   ];
 
   const getPageTitle = () => {
     if (location.pathname === '/admin') return 'Aperçu';
     if (location.pathname.includes('products')) return 'Produits';
     if (location.pathname.includes('categories')) return 'Catégories';
+    if (location.pathname.includes('discounts')) return 'Réductions';
     return 'Admin';
   };
 
@@ -141,6 +145,7 @@ const AdminDashboard = () => {
               <Route path="/" element={<AdminHome />} />
               <Route path="/products" element={<ManageProducts />} />
               <Route path="/categories" element={<ManageCategories />} />
+              <Route path="/discounts" element={<ManageDiscounts />} />
             </Routes>
           </div>
         </main>
@@ -292,6 +297,7 @@ const AdminHome = () => {
   const [stats, setStats] = useState({
     products: 0,
     categories: 0,
+    discounts: 0,
     totalVisits: 0,
     uniqueVisitors: 0,
     totalConversions: 0,
@@ -306,14 +312,16 @@ const AdminHome = () => {
     const fetchData = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL;
-        const [p, c, s] = await Promise.all([
+        const [p, c, d, s] = await Promise.all([
           axios.get(`${apiUrl}/api/products`),
           axios.get(`${apiUrl}/api/categories`),
+          axios.get(`${apiUrl}/api/discounts`),
           axios.get(`${apiUrl}/api/stats`),
         ]);
         setStats({
           products: p.data.length,
           categories: c.data.length,
+          discounts: (d.data || []).filter(x => x.isActive).length,
           ...s.data,
         });
       } catch (err) {
@@ -330,6 +338,7 @@ const AdminHome = () => {
   const cards = [
     { label: 'Produits', value: fmt(stats.products), icon: <ShoppingBag />, color: '#4f46e5', link: '/admin/products' },
     { label: 'Catégories', value: fmt(stats.categories), icon: <Tags />, color: '#d4af37', link: '/admin/categories' },
+    { label: 'Réductions actives', value: fmt(stats.discounts), icon: <Percent />, color: '#ef4444', link: '/admin/discounts' },
     { label: 'Visites', value: fmt(stats.totalVisits), icon: <TrendingUp />, color: '#10b981', link: '#' },
     { label: 'Clients uniques', value: fmt(stats.uniqueVisitors), icon: <Users />, color: '#f59e0b', link: '#' },
     { label: 'Conversions WhatsApp', sub: `${stats.conversionRate}% du trafic`, value: fmt(stats.totalConversions), icon: <MessageCircle />, color: '#25D366', link: '#' },
@@ -372,6 +381,13 @@ const AdminHome = () => {
             <div className="quick-info">
               <h4>Catégories</h4>
               <p>Gérer les sections</p>
+            </div>
+          </Link>
+          <Link to="/admin/discounts" className="quick-card">
+            <div className="quick-icon secondary"><Percent size={24} /></div>
+            <div className="quick-info">
+              <h4>Réductions</h4>
+              <p>Promotions et soldes</p>
             </div>
           </Link>
         </div>

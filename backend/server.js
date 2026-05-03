@@ -32,6 +32,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // Routes
 app.use('/api/products', require('./routes/products'));
 app.use('/api/categories', require('./routes/categories'));
+app.use('/api/discounts', require('./routes/discounts'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/visits', require('./routes/visits'));
 app.use('/api/conversions', require('./routes/conversions'));

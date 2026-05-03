@@ -8,17 +8,26 @@ const ProductCard = ({ product }) => {
   const currentLang = i18n.language;
 
   const name = currentLang === 'ar' ? product.name_ar : product.name_fr;
+  const hasDiscount = product.discountPercentage > 0;
+  const finalPrice = hasDiscount ? product.finalPrice : product.price;
 
   const handleWhatsApp = () => {
     trackConversion({
       productId: product._id,
       productName: product.name_fr,
-      price: product.price,
+      price: finalPrice,
     });
 
     const ref = getVisitorRef();
-    const textFr = `Bonjour Rimy ✨\n\nJe suis très intéressé(e) par ce produit et j'aimerais passer commande :\n\n🛍️ *Produit* : ${product.name_fr}\n💰 *Prix* : ${product.price} MRU\n\nPouvez-vous s'il vous plaît me confirmer la disponibilité ? Merci !\n\nPhoto: ${product.images[0] || ''}\n\nRéf: ${ref}`;
-    const textAr = `مرحباً ريمي ✨\n\nأنا مهتم(ة) جداً بهذا المنتج وأود تقديم طلب:\n\n🛍️ *المنتج* : ${product.name_ar}\n💰 *السعر* : ${product.price} أوقية\n\nهل يمكنكم تأكيد توفر هذا المنتج؟ شكراً لكم!\n\nصورة: ${product.images[0] || ''}\n\nالمرجع: ${ref}`;
+    const priceLineFr = hasDiscount
+      ? `💰 *Prix* : ~${product.price} MRU~ ➜ *${finalPrice} MRU* (-${product.discountPercentage}%)`
+      : `💰 *Prix* : ${product.price} MRU`;
+    const priceLineAr = hasDiscount
+      ? `💰 *السعر* : ~${product.price} أوقية~ ➜ *${finalPrice} أوقية* (-${product.discountPercentage}%)`
+      : `💰 *السعر* : ${product.price} أوقية`;
+
+    const textFr = `Bonjour Rimy ✨\n\nJe suis très intéressé(e) par ce produit et j'aimerais passer commande :\n\n🛍️ *Produit* : ${product.name_fr}\n${priceLineFr}\n\nPouvez-vous s'il vous plaît me confirmer la disponibilité ? Merci !\n\nPhoto: ${product.images[0] || ''}\n\nRéf: ${ref}`;
+    const textAr = `مرحباً ريمي ✨\n\nأنا مهتم(ة) جداً بهذا المنتج وأود تقديم طلب:\n\n🛍️ *المنتج* : ${product.name_ar}\n${priceLineAr}\n\nهل يمكنكم تأكيد توفر هذا المنتج؟ شكراً لكم!\n\nصورة: ${product.images[0] || ''}\n\nالمرجع: ${ref}`;
     const text = currentLang === 'ar' ? textAr : textFr;
 
     window.open(`https://wa.me/22224230000?text=${encodeURIComponent(text)}`, '_blank');
@@ -41,11 +50,24 @@ const ProductCard = ({ product }) => {
         {product.isBestSeller && (
           <span className="badge badge-best-seller absolute-badge top-right">{t('best_sellers')}</span>
         )}
+        {product.isNew && (
+          <span className="badge badge-new absolute-badge top-right-2">{t('new') || 'Nouveau'}</span>
+        )}
+        {hasDiscount && (
+          <span className="badge badge-discount absolute-badge top-left">-{product.discountPercentage}%</span>
+        )}
       </div>
 
       <div className="product-info">
         <h3>{name}</h3>
-        <p className="price">{product.price} MRU</p>
+        {hasDiscount ? (
+          <p className="price">
+            <span className="price-old">{product.price} MRU</span>
+            <span className="price-new">{finalPrice} MRU</span>
+          </p>
+        ) : (
+          <p className="price">{product.price} MRU</p>
+        )}
       </div>
 
       <div className="product-actions">

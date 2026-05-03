@@ -38,6 +38,55 @@
   bottom: auto;
   left: auto;
 }
+.top-left {
+  top: 15px;
+  left: 15px;
+  bottom: auto;
+  right: auto;
+}
+.badge-discount {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: white;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+.badge-new {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.top-right-2 {
+  top: 60px;
+  right: 15px;
+  bottom: auto;
+  left: auto;
+}
+.price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.price-old {
+  text-decoration: line-through;
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.price-new {
+  color: #ef4444;
+  font-weight: 800;
+}
 .product-logo-overlay {
   position: absolute;
   top: 50%;
@@ -134,6 +183,30 @@
     right: 6px;
     bottom: auto;
     left: auto;
+  }
+  .top-left {
+    top: 6px;
+    left: 6px;
+    bottom: auto;
+    right: auto;
+  }
+  .badge-discount {
+    font-size: 0.6rem;
+    padding: 3px 7px;
+  }
+  .badge-new {
+    font-size: 0.55rem;
+    padding: 3px 6px;
+  }
+  .top-right-2 {
+    top: 28px;
+    right: 6px;
+  }
+  .price-old {
+    font-size: 0.7rem;
+  }
+  .price {
+    gap: 5px;
   }
   .product-logo-watermark {
     width: 55px;

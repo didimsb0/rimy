@@ -28,7 +28,7 @@ const ManageProducts = () => {
         name_fr: '', name_ar: '',
         price: '', category: '',
         description_fr: '', description_ar: '',
-        isBestSeller: false, isSoldOut: false
+        isBestSeller: false, isSoldOut: false, isNew: false
     });
     const [images, setImages] = useState([]);
     const [previews, setPreviews] = useState([]);
@@ -96,7 +96,7 @@ const ManageProducts = () => {
             setShowForm(false);
             setEditingProduct(null);
             fetchData();
-            setFormData({ name_fr: '', name_ar: '', price: '', category: '', description_fr: '', description_ar: '', isBestSeller: false, isSoldOut: false });
+            setFormData({ name_fr: '', name_ar: '', price: '', category: '', description_fr: '', description_ar: '', isBestSeller: false, isSoldOut: false, isNew: false });
             setImages([]);
             setPreviews([]);
         } catch (err) {
@@ -115,7 +115,8 @@ const ManageProducts = () => {
             description_fr: product.description_fr || '',
             description_ar: product.description_ar || '',
             isBestSeller: product.isBestSeller || false,
-            isSoldOut: product.isSoldOut || false
+            isSoldOut: product.isSoldOut || false,
+            isNew: product.isNew || false
         });
         setPreviews(product.images || []);
         setShowForm(true);
@@ -207,6 +208,7 @@ const ManageProducts = () => {
                                         <td>
                                             <div className="status-badges">
                                                 {p.isBestSeller && <span className="badge badge-gold">Top</span>}
+                                                {p.isNew && <span className="badge badge-blue">Nouveau</span>}
                                                 {p.isSoldOut && <span className="badge badge-red">Épuisé</span>}
                                                 {!p.isSoldOut && <span className="badge badge-green">Stock</span>}
                                             </div>
@@ -363,6 +365,15 @@ const ManageProducts = () => {
                                         <label className="toggle">
                                             <input
                                                 type="checkbox"
+                                                checked={formData.isNew}
+                                                onChange={e => setFormData({ ...formData, isNew: e.target.checked })}
+                                            />
+                                            <span className="slider"></span>
+                                            <span className="toggle-label text-blue">Nouveauté</span>
+                                        </label>
+                                        <label className="toggle">
+                                            <input
+                                                type="checkbox"
                                                 checked={formData.isSoldOut}
                                                 onChange={e => setFormData({ ...formData, isSoldOut: e.target.checked })}
                                             />
@@ -476,6 +487,8 @@ const ManageProducts = () => {
                 input:checked + .slider:before { transform: translateX(16px); }
                 .toggle-label { font-size: 0.9rem; font-weight: 500; color: #475569; }
                 .text-red { color: #ef4444; }
+                .text-blue { color: #2563eb; }
+                .badge-blue { background: #dbeafe; color: #1d4ed8; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
 
                 .form-footer { margin-top: 3rem; display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid #f1f5f9; padding-top: 2rem; }
                 .btn-ghost { background: #f8fafc; color: #64748b; }
